@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Convert Retard Units to Metrics!</title>
-</head>
-<body>
-    <h1>Retard Unit Converter</h1>
-    <input type="number" id="input-inch">
-    <p id="output-inch"></p>
-    <input type="number" id="input-pounds">
-    <p id="output-pounds"></p>
-    <script src="main.js"></script>
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="styles.css" />
+        <title>Convert Retard Units to Metrics!</title>
+    </head>
+    <body>
+        <h1>Retard Unit Converter</h1>
+        <div class="conversion-container" id="inch">
+            <input type="number" class="retard" id="input-inch" />
+            <p class="non-retard" id="output-inch"></p>
+        </div>
+        <div class="conversion-container" id="pounds">
+            <input type="number" class="retard" id="input-pounds" />
+            <p class="non-retard" id="output-pounds"></p>
+        </div>
+
+        <script src="main.js"></script>
+    </body>
 </html>
 
 <!--

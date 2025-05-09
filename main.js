@@ -1,23 +1,40 @@
-const inputInch = document.getElementById("input-inch");
-const outputInch = document.getElementById("output-inch");
-const inputPounds = document.getElementById("input-pounds");
-const outputPounds = document.getElementById("output-pounds");
 
+const conversionContainers = document.querySelectorAll(".conversion-container");
 
-inputInch.addEventListener("input", function() {
-    let output = convertToNonRetard("inch", inputInch.value);
-    outputInch.textContent = output;
-})
+conversionContainers.forEach((container) => {
+    console.log("Container-id: " + container.id);
+    const retardUnit = container.id;
+    console.log("Retard unit: " + retardUnit);
 
-inputPounds.addEventListener("input", function() {
-    let output = convertToNonRetard("pounds", inputPounds.value);
-    outputPounds.textContent = output;
-})
+    const inputField = document.getElementById("input-" + retardUnit);
+    const outputField = document.getElementById("output-" + retardUnit);
+    const nonRetardUnit = getNonRetardedUnit(retardUnit);
+
+    container.addEventListener("input", function () {
+        const convertedValue = convertToNonRetard(retardUnit, inputField.value);
+        outputField.textContent = convertedValue + " " + nonRetardUnit;
+        console.log(inputField.value);
+        console.log(convertedValue);
+    });
+});
+
 
 function convertToNonRetard(retardUnit, value) {
-    if (retardUnit === "inch") {
-        return value * 2.54
-    } else if (retardUnit === "pounds") {
-        return value * 0.45
+    switch (retardUnit) {
+        case "inch":
+            return value * 2.54;
+        case "pounds":
+            return value * 0.45;
+    }
+}
+
+function getNonRetardedUnit(retardUnit) {
+    switch (retardUnit) {
+        case "feet":
+            return "m";
+        case "inch":
+            return "cm";
+        case "pounds":
+            return "kg";
     }
 }
