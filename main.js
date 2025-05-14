@@ -1,15 +1,23 @@
 const addButton = document.getElementById("add-btn");
-const conversionContainerGroup = document.getElementById(
-    "converter-group"
-);
-const retardUnitsList = ["feet", "inch", "pounds", "miles", "pint", "helicopter"];
+const conversionContainerGroup = document.getElementById("converter-group");
+const retardUnitsList = [
+    "feet",
+    "inch",
+    "pounds",
+    "miles",
+    "pint",
+    "helicopter",
+];
 const checkboxGroup = document.getElementById("checkbox-group");
-const retardCheckboxes = document.querySelectorAll(".retard-checkbox");
 
 initializeCheckboxes(retardUnitsList);
 
+const retardCheckboxes = document.querySelectorAll(".retard-checkbox");
+console.log(retardCheckboxes);
+
 function initializeCheckboxes(retardUnitsList) {
-    let checkboxes = "";
+    let checkboxes =
+        "<legend>Which retard units do you want to convert?</legend>"; // Damit die Fieldset-Legende nicht überschrieben wird, setzen wir sie hier an den Anfang der HTML-Liste.
     retardUnitsList.forEach((retardUnit) => {
         checkboxes += `
             <div class="checkbox-container">
@@ -17,6 +25,7 @@ function initializeCheckboxes(retardUnitsList) {
                     type="checkbox"
                     class="retard-checkbox"
                     id="checkbox-${retardUnit}"
+                    name="${retardUnit}"
                 />
                 <label for="checkbox-${retardUnit}">${retardUnit}</label>
             </div>
@@ -25,12 +34,25 @@ function initializeCheckboxes(retardUnitsList) {
     checkboxGroup.innerHTML = checkboxes;
 }
 
-
-
+retardCheckboxes.forEach((checkbox) => {
+    console.log("Sis is a checkbox: " + checkbox.name);
+    checkbox.addEventListener("click", function () {
+        console.log(checkbox.checked);
+        if (checkbox.checked) {
+            activeRetardUnitsList.push(checkbox.name);
+            console.log(activeRetardUnitsList);
+        } else {
+            let index = activeRetardUnitsList.indexOf(checkbox.name);
+            activeRetardUnitsList.splice(index, 1);
+            console.log(activeRetardUnitsList);
+        }
+        initializeContainers(activeRetardUnitsList);
+    });
+});
 
 // Erstellt eine Liste aller Retard Units, für die ein Conversion-Container gebaut werden soll.
 // Die Liste ist dann im Browser zu speichern. Standard-Anfangseinstellung sind Feet, Inch, Pounds.
-let activeRetardUnitsList = ["feet", "inch", "pounds"];
+let activeRetardUnitsList = [];
 
 // Mit Hilfe der Retar-Unit-Liste werden dann die benötigten Container gerendert:
 initializeContainers(activeRetardUnitsList);
@@ -42,7 +64,9 @@ function initializeContainers(activeRetardUnitsList) {
             <div class="conversion-container" id="${retardUnit}">
                 <label for="${retardUnit}">${retardUnit}:</label>
                 <input type="number" class="retard" id="input-${retardUnit}" />
-                <label for="${retardUnit}">to ${getNonRetardedUnit(retardUnit)}</label>
+                <label for="${retardUnit}">to ${getNonRetardedUnit(
+            retardUnit
+        )}</label>
                 <p class="non-retard" id="output-${retardUnit}"></p>
             </div>
         `;
