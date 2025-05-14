@@ -5,3 +5,12 @@ body {
 #calculation-container {
     text-align: center;
 }
+
+#checkbox-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.checkbox-container {
+    flex-direction: row;
+}

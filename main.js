@@ -1,16 +1,43 @@
 const addButton = document.getElementById("add-btn");
 const conversionContainerGroup = document.getElementById(
-    "conversion-container-group"
+    "converter-group"
 );
+const retardUnitsList = ["feet", "inch", "pounds", "miles", "pint", "helicopter"];
+const checkboxGroup = document.getElementById("checkbox-group");
+const retardCheckboxes = document.querySelectorAll(".retard-checkbox");
+
+initializeCheckboxes(retardUnitsList);
+
+function initializeCheckboxes(retardUnitsList) {
+    let checkboxes = "";
+    retardUnitsList.forEach((retardUnit) => {
+        checkboxes += `
+            <div class="checkbox-container">
+                <input
+                    type="checkbox"
+                    class="retard-checkbox"
+                    id="checkbox-${retardUnit}"
+                />
+                <label for="checkbox-${retardUnit}">${retardUnit}</label>
+            </div>
+        `;
+    });
+    checkboxGroup.innerHTML = checkboxes;
+}
+
+
+
 
 // Erstellt eine Liste aller Retard Units, für die ein Conversion-Container gebaut werden soll.
 // Die Liste ist dann im Browser zu speichern. Standard-Anfangseinstellung sind Feet, Inch, Pounds.
-let retardUnitsList = ["feet", "inch", "pounds"];
-initializeContainers(retardUnitsList);
+let activeRetardUnitsList = ["feet", "inch", "pounds"];
 
-function initializeContainers(retardUnitsList) {
+// Mit Hilfe der Retar-Unit-Liste werden dann die benötigten Container gerendert:
+initializeContainers(activeRetardUnitsList);
+
+function initializeContainers(activeRetardUnitsList) {
     let containers = "";
-    retardUnitsList.forEach((retardUnit) => {
+    activeRetardUnitsList.forEach((retardUnit) => {
         containers += `
             <div class="conversion-container" id="${retardUnit}">
                 <label for="${retardUnit}">${retardUnit}:</label>
@@ -24,7 +51,7 @@ function initializeContainers(retardUnitsList) {
 }
 
 // Erstellt ein Array mit allen Conversion-Containern:
-let conversionContainers = document.querySelectorAll(".conversion-container");
+const conversionContainers = document.querySelectorAll(".conversion-container");
 
 // Definiert anschließend das Verhalten für alle Conversion-Containers:
 conversionContainers.forEach((container) => {
@@ -52,6 +79,8 @@ conversionContainers.forEach((container) => {
 // TODO: Lösche einen bestimmten Conversion-Container aus dem Array
 
 // Innere Funktion(en):
+function activateConverter(retardUnit, value) {}
+
 function convertToNonRetard(retardUnit, value) {
     switch (retardUnit) {
         case "feet":
