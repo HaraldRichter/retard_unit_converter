@@ -1,5 +1,13 @@
-const addButton = document.getElementById("add-btn");
+const checkboxGroup = document.getElementById("checkbox-group");
 const conversionContainerGroup = document.getElementById("converter-group");
+
+// Die Liste der Conversion Containers ist Anfangs noch leer. Sie wird dann im Initialisierungs-Step befüllt:
+var conversionContainers;
+
+/* 
+Die Retard Units List ist die Liste der Retard Units, die sich konvertieren lassen. Um eine neue Unit hinzuzufügen, muss sie lediglich in diese Liste
+sowie in die Umrechnungstabellen - die Funktionen convertToNonRetard() und getNonRetardedUnit() - eingetragen werden. Das HTML wird dann dynamisch erzeugt.
+*/
 const retardUnitsList = [
     "feet",
     "inch",
@@ -8,18 +16,41 @@ const retardUnitsList = [
     "pint",
     "helicopter",
 ];
-const checkboxGroup = document.getElementById("checkbox-group");
 
+// Die Checkboxen, mit denen man die einzelnen Conversion-Container an- und abwählen kann, werden anhand der retardUnitList erstellt:
 initializeCheckboxes(retardUnitsList);
 
-const retardCheckboxes = document.querySelectorAll(".retard-checkbox");
-console.log(retardCheckboxes);
+// Erstellt eine Liste aller Retard Units, für die ein Conversion-Container gebaut werden soll.
+// Die Liste ist dann im Browser zu speichern. Standard-Anfangseinstellung sind Feet, Inch, Pounds.
+let activeRetardUnitsList = ["feet", "inch", "pounds"];
 
+// Mit Hilfe der Retard-Unit-Liste werden dann die benötigten Container gerendert:
+initializeConverters(activeRetardUnitsList);
+
+// INITIALISIERUNGSFUNKTIONEN:
 function initializeCheckboxes(retardUnitsList) {
     let checkboxes =
         "<legend>Which retard units do you want to convert?</legend>"; // Damit die Fieldset-Legende nicht überschrieben wird, setzen wir sie hier an den Anfang der HTML-Liste.
     retardUnitsList.forEach((retardUnit) => {
-        checkboxes += `
+        if (
+            retardUnit === "feet" ||
+            retardUnit === "inch" ||
+            retardUnit === "pounds"
+        ) {
+            checkboxes += `
+            <div class="checkbox-container">
+                <input
+                    type="checkbox"
+                    class="retard-checkbox"
+                    id="checkbox-${retardUnit}"
+                    name="${retardUnit}"
+                    checked
+                />
+                <label for="checkbox-${retardUnit}">${retardUnit}</label>
+            </div>
+        `;
+        } else {
+            checkboxes += `
             <div class="checkbox-container">
                 <input
                     type="checkbox"
@@ -30,77 +61,55 @@ function initializeCheckboxes(retardUnitsList) {
                 <label for="checkbox-${retardUnit}">${retardUnit}</label>
             </div>
         `;
+        }
     });
     checkboxGroup.innerHTML = checkboxes;
+
+    const retardCheckboxes = document.querySelectorAll(".retard-checkbox");
+
+    retardCheckboxes.forEach((checkbox) => {
+        checkbox.addEventListener("click", function () {
+            if (checkbox.checked) {
+                activeRetardUnitsList.push(checkbox.name);
+            } else {
+                let index = activeRetardUnitsList.indexOf(checkbox.name);
+                activeRetardUnitsList.splice(index, 1);
+            }
+            initializeConverters(activeRetardUnitsList);
+        });
+    });
 }
 
-retardCheckboxes.forEach((checkbox) => {
-    console.log("Sis is a checkbox: " + checkbox.name);
-    checkbox.addEventListener("click", function () {
-        console.log(checkbox.checked);
-        if (checkbox.checked) {
-            activeRetardUnitsList.push(checkbox.name);
-            console.log(activeRetardUnitsList);
-        } else {
-            let index = activeRetardUnitsList.indexOf(checkbox.name);
-            activeRetardUnitsList.splice(index, 1);
-            console.log(activeRetardUnitsList);
-        }
-        initializeContainers(activeRetardUnitsList);
-    });
-});
-
-// Erstellt eine Liste aller Retard Units, für die ein Conversion-Container gebaut werden soll.
-// Die Liste ist dann im Browser zu speichern. Standard-Anfangseinstellung sind Feet, Inch, Pounds.
-let activeRetardUnitsList = [];
-
-// Mit Hilfe der Retar-Unit-Liste werden dann die benötigten Container gerendert:
-initializeContainers(activeRetardUnitsList);
-
-function initializeContainers(activeRetardUnitsList) {
-    let containers = "";
+function initializeConverters(activeRetardUnitsList) {
+    let converters = "";
     activeRetardUnitsList.forEach((retardUnit) => {
-        containers += `
+        converters += `
             <div class="conversion-container" id="${retardUnit}">
-                <label for="${retardUnit}">${retardUnit}:</label>
                 <input type="number" class="retard" id="input-${retardUnit}" />
-                <label for="${retardUnit}">to ${getNonRetardedUnit(
+                <label for="${retardUnit}">${retardUnit}</label>
+                
+                <label for="${retardUnit}"> = <span class="non-retard" id="output-${retardUnit}">0</span> ${getNonRetardedUnit(
             retardUnit
-        )}</label>
-                <p class="non-retard" id="output-${retardUnit}"></p>
-            </div>
+        )}
         `;
     });
-    conversionContainerGroup.innerHTML = containers;
-}
+    conversionContainerGroup.innerHTML = converters;
+    conversionContainers = document.querySelectorAll(".conversion-container");
 
-// Erstellt ein Array mit allen Conversion-Containern:
-const conversionContainers = document.querySelectorAll(".conversion-container");
+    conversionContainers.forEach((container) => {
+        const retardUnit = container.id;
+        const inputField = document.getElementById("input-" + retardUnit);
+        const outputField = document.getElementById("output-" + retardUnit);
 
-// Definiert anschließend das Verhalten für alle Conversion-Containers:
-conversionContainers.forEach((container) => {
-    console.log("Container-id: " + container.id);
-    const retardUnit = container.id;
-    console.log("Retard unit: " + retardUnit);
-
-    const inputField = document.getElementById("input-" + retardUnit);
-    const outputField = document.getElementById("output-" + retardUnit);
-    const nonRetardUnit = getNonRetardedUnit(retardUnit);
-
-    container.addEventListener("input", function () {
-        const convertedValue = convertToNonRetard(retardUnit, inputField.value);
-        outputField.textContent = convertedValue + " " + nonRetardUnit;
-        console.log(inputField.value);
-        console.log(convertedValue);
+        container.addEventListener("input", function () {
+            const convertedValue = convertToNonRetard(
+                retardUnit,
+                inputField.value
+            );
+            outputField.textContent = convertedValue;
+        });
     });
-});
-
-// TODO: Füge einen Conversion-Container mit bestimmten Parametern dem Container-Array hinzu
-// function addConversionContainer(retardUnit) {
-
-// }
-
-// TODO: Lösche einen bestimmten Conversion-Container aus dem Array
+}
 
 // Innere Funktion(en):
 function activateConverter(retardUnit, value) {}
@@ -113,6 +122,8 @@ function convertToNonRetard(retardUnit, value) {
             return parseFloat(value * 2.54).toFixed(2);
         case "pounds":
             return parseFloat(value * 0.45).toFixed(2);
+        default:
+            return parseFloat(value).toFixed(2);
     }
 }
 
@@ -124,5 +135,7 @@ function getNonRetardedUnit(retardUnit) {
             return "cm";
         case "pounds":
             return "kg";
+        default:
+            return "non-retarded";
     }
 }
