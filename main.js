@@ -69,31 +69,17 @@ function initializeCheckboxes(retardUnitsList, activeRetardUnitsList) {
         checkbox.addEventListener("click", function () {
             if (checkbox.checked) {
                 let converter = document.getElementById(checkbox.name);
-
                 converter.style.display = "block";
-                console.log(checkbox.name + " checked");
-                console.log(converter);
                 conversionContainers.forEach((converter) => {
                     console.log(converter.id + " - " + converter.style.display);
                 });
-                // activeRetardUnitsList.push(checkbox.name);
             } else {
                 let converter = document.getElementById(checkbox.name);
                 converter.style.display = "none";
-                console.log(checkbox.name + " unchecked");
-                console.log(converter);
-                conversionContainers.forEach((converter) => {
-                    console.log(converter.id + " - " + converter.style.display);
-                });
-                // let index = activeRetardUnitsList.indexOf(checkbox.name);
-                // activeRetardUnitsList.splice(index, 1);
             }
-            // initializeConverters(activeRetardUnitsList);
         });
     });
 }
-
-
 
 function initializeConverters(retardUnitsList, activeRetardUnitsList) {
     let converters = "";
@@ -106,7 +92,8 @@ function initializeConverters(retardUnitsList, activeRetardUnitsList) {
                 <label for="${retardUnit}">${retardUnit}</label>
                 <label for="${retardUnit}"> = <span class="non-retard" id="output-${retardUnit}">0</span> ${getNonRetardedUnit(
             retardUnit
-        )}
+        )} </label>
+        </div>
         `;
     });
     conversionContainerGroup.innerHTML = converters;
@@ -126,8 +113,6 @@ function initializeConverters(retardUnitsList, activeRetardUnitsList) {
         });
     });
 }
-
-
 
 /*
 ----------------- HELPER FUNCTIONS ------------------------ 
