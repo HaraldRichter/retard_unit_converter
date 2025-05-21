@@ -9,26 +9,11 @@
     <body>
         <h1>Retard Unit Converter</h1>
         <div id="converter-group">
-            <!-- Hier werden die Conversion-Container gerendert -->
+            <!-- Here the converters (input-field for the retard unit with its corresponding output-field) are rendered (main.js: initializeConverters() ) -->
         </div>
         <fieldset id="checkbox-group">
-            <!-- Hier werden die Switches gerendert, mit denen sich die einzelnen Conversions ein- und ausblenden lassen -->
+            <!-- Here the list of checkboxes for activating/deactivating individual converters is generated (main.js: initializeCheckboxes() ) -->
         </fieldset>
         <script src="main.js"></script>
     </body>
 </html>
-
-<!--
-MVP:
-Verschienede Textfelder untereinander, die automatisch - schon bei Eingabe - die entsprechende Einheit umwandeln
-
-Bonusfeature:
-An- und Abwählen verschiedener Einheiten über ein aufklappbares Menü
-    Clou: Man kann auch mehrere Felder für dieselbe Umrechnung haben, wenn man z.B. auf einen Blick mehrere Größen vergleichen will
-    Umsetzung: Über einen kleinen (+)-Button gelangt man in ein Menü, in dem man nach Belieben umrechnungsfelder hinzufügen kann. Nicht mehr
-                benötigte Felder lassen sich über einen Mülleimer-Button o.ä. entfernen.
-                => Die Felderzusammenstellung wird im Browser gespeichert
-
-Advanced Project:
-Währungs-Umrechner mit aktuellen Kursen!
--->
