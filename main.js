@@ -1,7 +1,7 @@
 const converterGroup = document.getElementById("converter-group"); // The HTML-section that contains the converters
 const checkboxGroup = document.getElementById("checkbox-group"); // The HTML-section that contains the checkboxes
 const openCheckboxesBtn = document.getElementById("open-checkboxes-btn");
-
+const activeRetardUnitsListFromLocalStorage = JSON.parse(localStorage.getItem("myActiveRetardUnits"))
 
 /**
  * The converters-array gets filled by running initializeConverters(). It then contains the HTML-code for all the converters.
@@ -23,10 +23,16 @@ const retardUnitsList = [
 ];
 
 /**
- * Creates a list of all converters that are activated by the user and therefore shown. Deactivated converters are hidden.
- * The default setting is ["feet", "inch", "pounds"]. This list is to be saved to the browser cache, so that the user can modify the standard settings according to his own preferences.
+ * Creates a list of all converters that are activated by the user. Deactivated converters are hidden.
+ * The list gets saved to the browser cache, so that the user can modify the standard settings according to his own preferences.
+ * If there is nothing saved to the cache, the default setting is ["feet", "inch", "pounds"]. 
  */
-let activeRetardUnitsList = ["feet", "inch", "pounds"];
+let activeRetardUnitsList;
+if (activeRetardUnitsListFromLocalStorage) {
+    activeRetardUnitsList = activeRetardUnitsListFromLocalStorage;
+} else {
+    activeRetardUnitsList = ["feet", "inch", "pounds"];
+}
 
 /**
  * INITIALIZATION: The checkboxes and converters are dynamically rendered.
@@ -92,7 +98,7 @@ function initializeConverters(retardUnitsList, activeRetardUnitsList) {
 
 /**
  * Creates the checkboxes to activate/deactivate individual converters.
- * Activation/deactivation is handled by setting a converter's display-value to "block" or "none".
+ * Activation/deactivation is handled by setting a converter's display-value to "" (which means, is is shown) or "none".
  * 
  * @param {Array} retardUnitsList List of all retard units that can be converted
  * @param {Array} activeRetardUnitsList List of units currently activated to show the converter
@@ -139,16 +145,18 @@ function initializeCheckboxes(retardUnitsList, activeRetardUnitsList) {
 
     // Add functionality to the checkboxes: If a checkbox is checked, the corresponding converter is displayed, if it's unchecked, the converter gets hidden
     retardCheckboxes.forEach((checkbox) => {
+        const converter = document.getElementById(checkbox.name);
         checkbox.addEventListener("click", function () {
             if (checkbox.checked) {
-                let converter = document.getElementById(checkbox.name);
                 converter.style.display = "";
-                // converters.forEach((converter) => {
-                //     console.log(converter.id + " - " + converter.style.display);
-                // });
+                // Update the activeRetardUnitsList and save it to the browser cache
+                activeRetardUnitsList.push(checkbox.name);
+                localStorage.setItem("myActiveRetardUnits", JSON.stringify(activeRetardUnitsList));
             } else {
-                let converter = document.getElementById(checkbox.name);
                 converter.style.display = "none";
+                // Update the activeRetardUnitsList and save it to the browser cache
+                removeItem(activeRetardUnitsList, checkbox.name);
+                localStorage.setItem("myActiveRetardUnits", JSON.stringify(activeRetardUnitsList));
             }
         });
     });
@@ -218,5 +226,18 @@ function getDisplay(value) {
         return "block";
     } else {
         return "none";
+    }
+}
+
+/**
+ * Removes a specific item from an array by modifying the array itself
+ * 
+ * @param {Array} array the array to be modified
+ * @param {String} itemToRemove the item to be removed from the array
+ */
+function removeItem(array, itemToRemove) {
+    const index = array.indexOf(itemToRemove);
+    if (index !== -1) {
+        array.splice(index, 1);
     }
 }
