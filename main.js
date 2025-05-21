@@ -1,5 +1,6 @@
 const converterGroup = document.getElementById("converter-group"); // The HTML-section that contains the converters
 const checkboxGroup = document.getElementById("checkbox-group"); // The HTML-section that contains the checkboxes
+const openCheckboxesBtn = document.getElementById("open-checkboxes-btn");
 
 
 /**
@@ -141,10 +142,10 @@ function initializeCheckboxes(retardUnitsList, activeRetardUnitsList) {
         checkbox.addEventListener("click", function () {
             if (checkbox.checked) {
                 let converter = document.getElementById(checkbox.name);
-                converter.style.display = "block";
-                converters.forEach((converter) => {
-                    console.log(converter.id + " - " + converter.style.display);
-                });
+                converter.style.display = "";
+                // converters.forEach((converter) => {
+                //     console.log(converter.id + " - " + converter.style.display);
+                // });
             } else {
                 let converter = document.getElementById(checkbox.name);
                 converter.style.display = "none";
@@ -152,6 +153,16 @@ function initializeCheckboxes(retardUnitsList, activeRetardUnitsList) {
         });
     });
 }
+
+openCheckboxesBtn.addEventListener("click", function() {
+    if (checkboxGroup.style.display === "") {
+        openCheckboxesBtn.innerHTML = `More Retards here &darr;`
+        checkboxGroup.style.display = "none"
+    } else {
+        openCheckboxesBtn.textContent = "Close"
+        checkboxGroup.style.display = ""
+    }
+})
 
 /*
 ----------------- HELPER FUNCTIONS ------------------------ 
