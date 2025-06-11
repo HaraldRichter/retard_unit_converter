@@ -66,7 +66,7 @@ function initializeConverters(retardUnitsList, activeRetardUnitsList) {
         )}">
                 <input type="number" class="retard" id="input-${retardUnit}" />
                 <label for="${retardUnit}">${retardUnit}</label>
-                <label for="${retardUnit}"> = <span class="non-retard" id="output-${retardUnit}">0</span> ${getNonRetardedUnit(
+                <label for="${retardUnit}"> = <span class="non-retard" id="output-${retardUnit}">0.00</span> ${getNonRetardedUnit(
             retardUnit
         )} </label>
         </div>
@@ -191,6 +191,8 @@ function convertToNonRetard(retardUnit, value) {
             return parseFloat(value * 2.54).toFixed(2);
         case "pounds":
             return parseFloat(value * 0.45).toFixed(2);
+        case "fahrenheit":
+
         default:
             return parseFloat(value).toFixed(2);
     }

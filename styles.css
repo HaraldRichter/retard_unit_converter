@@ -1,14 +1,59 @@
 body {
-    text-align: center;
+    margin: 0;
 }
 
-#calculation-container {
+/* The whole converter window */
+
+/**
+TODO: Das Hintergrundbild passt sich der Größe nach derzeit noch dem Fenster an, was problematisch ist, wenn nur wenige oder viele
+Retard Units ausgewählt sind. Das Bild braucht eine feste Größe und Position!
+*/
+#main {
     text-align: center;
+    max-width: 400px;
+    margin: auto;
+    padding: 5px;
+    border-radius: 10px;
+    background-image: 
+    linear-gradient(75deg, rgb(36, 36, 214) 55%, transparent 85%),
+    url("./assets/murica.jpeg");
+    background-size: contain;
+    background-position: right;
+    background-repeat: no-repeat;
+    background-blend-mode: normal;
+    color: aliceblue;
+    font-weight: bold;
 }
 
+
+/* Section of the converters */
+#converter-group {
+
+}
+
+/* Container for a single retard-input-field and its non-retard output*/
+.converter {
+    padding: 5px;
+    text-align: start;
+
+
+}
+
+.retard {
+    max-width: 100px;
+    border-radius: 5px;
+    background-color: rgb(255 255 255 0);
+}
+
+#open-checkboxes-btn {
+    margin: 12px 0 3px 0;
+}
+
+/* Section of the checkboxes to add/remove converters */
 #checkbox-group {
     display: flex;
     flex-direction: column;
+    border: 2px solid green;
 }
 
 .checkbox-container {
